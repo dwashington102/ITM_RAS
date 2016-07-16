@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 # syjavareview.pl
+# Date: 2010/08/21
 #------------------------------------------------------------------------------
 # Licensed Materials - Property of IBM (C) Copyright IBM Corp. 2010, 2010
 # All Rights Reserved US Government Users Restricted Rights - Use, duplication
@@ -9,9 +10,10 @@
 #------------------------------------------------------------------------------
 # Script will parse SY Java logs gathering useful information
 # and identify common errors found in the log.
+# Author: David Washington
+# washingd@us.ibm.com
 #################################################################################
 #										
-# Date: 2010/08/21
 # Revision History:
 #
 # Revision 1.4 2016/05/05:

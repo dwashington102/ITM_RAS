@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 # temsreview.pl
+# Date: 2010/08/21
 #------------------------------------------------------------------------------
 # Licensed Materials - Property of IBM (C) Copyright IBM Corp. 2010, 2010
 # All Rights Reserved US Government Users Restricted Rights - Use, duplication
@@ -11,8 +12,8 @@
 # Script will parse RAS1 log for the TEMS, gather useful information, and provide
 # solutions for some known errors.
 # Author David Washington
+# washingd@us.ibm.com
 #################################################################################
-# Date: 2010/08/21
 #
 # Revision History:
 # Revision 1.22 2016/07/13

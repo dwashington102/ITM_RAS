@@ -1,5 +1,6 @@
 #!/usr/bin/perl -w
 # wpareview.pl
+# Date: 2010/08/21
 #------------------------------------------------------------------------------
 # Licensed Materials - Property of IBM (C) Copyright IBM Corp. 2010, 2010
 # All Rights Reserved US Government Users Restricted Rights - Use, duplication
@@ -10,8 +11,8 @@
 # Script will parse RAS logs for the Warehouse Proxy Agent, gather useful information,
 # and identify common errors found in the log.
 # Author: David Washington
+# washingd@us.ibm.com
 #################################################################################
-# Date: 2010/08/21
 #
 # Revision History:
 # Revision 2.0.10 2016/03/04

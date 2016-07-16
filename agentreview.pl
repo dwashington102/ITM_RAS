@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 # agentreview.pl
+# Date: 2010/08/21
 #------------------------------------------------------------------------------
 # Licensed Materials - Property of IBM (C) Copyright IBM Corp. 2010, 2010
 # All Rights Reserved US Government Users Restricted Rights - Use, duplication
@@ -10,8 +11,8 @@
 # Script will parse ITM RAS logs. Gathering useful information, locate known errors, and
 # provide solutions for known errors
 # Author:David Washington
+# washingd@us.ibm.com
 #################################################################################
-# Date: 2010/08/21
 #
 # Revision History:
 # Revision 2.0.3 2016/03/04
