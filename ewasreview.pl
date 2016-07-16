@@ -22,7 +22,6 @@
 #	>	($sDebugsetting) = $sDebugsetting =~ m/\*=(.*?)$/;
 #	from	($sDebugsetting) = $sDebugsetting =~ m/\strace\sstate\sis\s(.*?)$/;
 #
-# Revision 1.0 2010/09/17
 # Author: David Washington
 # washingd@us.ibm.com
 #
