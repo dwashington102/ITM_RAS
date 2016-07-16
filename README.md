@@ -1,2 +1,1 @@
-# work_vim
-README
+Contains Perl scripts to parse ITM RAS logs.
