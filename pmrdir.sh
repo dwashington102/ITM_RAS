@@ -28,8 +28,6 @@ else
 	datedir=$(date +"%Y%m%d")
 	printf "Creating directory: /mnt/ibm_linux_mount/pmrs/$PMR/$datedir\n"
 	mkdir -p /mnt/ibm_linux_mount/pmrs/$PMR/$datedir
-#	mkdir -p /mnt/ibm_linux_mount/pmrs/$PMR/$dir
-#	printf "Created directory: /mnt/ibm_linux_mount/pmrs/$PMR/$dir\n"
 	
 fi
 	printf "\n"
