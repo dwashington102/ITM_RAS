@@ -1,7 +1,24 @@
-" Vim syntax file
+" Vim syntax file: raslog.vim
 " " Language:         ITM 6 log syntax 
 " " Maintainer:       David Washington (washingd@us.ibm.com)
-" " Latest Revision:  2015-06-25
+" " Latest Revision:  2016-07-16
+" "
+" " Place raslog.vim in $HOME/.vim/syntax directory
+" " To automatically load raslog.vim when viewing ITM RAS logs add the
+" following to the $HOME/.vimrc file:
+" " =========== Auto filedetect - Load Syntax==========
+" au BufRead,BufNewFile SystemOut* set syntax=log
+" au BufRead,BufNewFile messages.log set syntax=log
+" au BufRead,BufNewFile cogserver.log set syntax=cognos
+" au BufRead,BufNewFile *_cq_KfwServices_* set syntax=raslog
+" au BufRead,BufNewFile *_cq_5* set syntax=raslog
+" au BufRead,BufNewFile *_hd_5* set syntax=raslog
+" au BufRead,BufNewFile *_ms_5* set syntax=raslog
+" au BufRead,BufNewFile *_cms_5* set syntax=raslog
+" au BufRead,BufNewFile *_sy_java_5* set syntax=raslog                                                                                                                                         
+" au BufRead,BufNewFile *_ux_kuxagent_5*.log      set syntax=raslog
+" au BufRead,BufNewFile *_lz_klzagent_5*.log      set syntax=raslog
+" au BufRead,BufNewFile *_nt_kntcma_5*.log      set syntax=raslog
 
 syntax clear
 syntax case match
