@@ -5,6 +5,6 @@ While loading the raslog.vim in vim and viewing a RAS log will highlight configu
 For instructions on automatically loading the raslog.vim syntax file,  view the header
 information in the raslog.vim file.
 
-Screenshot of ITM RAS log opended in VIM  using the raslog.vim syntax file.
+Screenshot of ITM RAS log opened in VIM  using the raslog.vim syntax file.
 
-![alt text](screenshot.png "Description goes here")
+![alt text](screenshot.png  "ITM RAS LOG with BSS1 ENV highlighted")
