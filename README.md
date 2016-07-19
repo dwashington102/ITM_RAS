@@ -1,4 +1,5 @@
-Running the Perl scripts against the ITM RAS logs  will extract configuration  information along with dknown errors.
+Running the Perl scripts against the ITM RAS logs  will extract configuration  information along with 
+known errors.
 
 In order to run the Perl scripts on MS-Windows use this procedure
 > Download ZIP file containing the scripts
@@ -7,7 +8,7 @@ In order to run the Perl scripts on MS-Windows use this procedure
 ex:  set PATH=%PATH%;C:\IBM\ITMRAS
 
 Call the scripts using:
-c:\ perl C:\IBM\ITMRAS\reviewras cq
+c:\ perl C:\IBM\ITMRAS\reviewras.pl cq
 
 
 
