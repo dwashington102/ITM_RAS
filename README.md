@@ -11,6 +11,8 @@ c:\ perl C:\IBM\ITMRAS\reviewras cq
 
 
 
+============================================================
+Using the vim syntax file raslog.vim
 
 
 While loading the raslog.vim in vim and viewing a RAS log will highlight configuration information and errors within the RAS log.
