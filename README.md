@@ -7,7 +7,7 @@ In order to run the Perl scripts on MS-Windows use this procedure
 > Add the C:\IBM\ITMRAS to the environment PATH
 ex:  set PATH=%PATH%;C:\IBM\ITMRAS
 
-Call the scripts using:
+Call the scripts from the MS-DOS prompt using :
 c:\ perl C:\IBM\ITMRAS\reviewras.pl cq
 
 
