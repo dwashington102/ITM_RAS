@@ -157,6 +157,8 @@ undef my @ARDatasourcefailed;
 undef my @ARctirahost;
 undef my @ARWpaconfig;
 undef my @AREnv;
+
+# Used to determine port information for Monitoring Service Index
 my $sKdhslqm=undef;
 
 # Common errors found in RAS logs 
@@ -826,7 +828,7 @@ if ($#ARUtf8 >= 0) {
 	$shiftutf8=($shiftutf8 =~ /^(.)([\dA-F]+)(\..*)/); 
 	printf "%s%s%s\n", $1, scalar(localtime(oct("0x$2"))),$3;
 	print color 'bold';
-	print "<<Solution: You need to set the OS environment variable DB2CODEPAGE=1208 for DB2 or NLS_LANG=<NLS_LANGUAGE>_<NLS_TERRITORY>.AL32UTF8 for ORACLE\nConfirm DB2CODEPAGE=1208 using the following commands (replace WAREHOUS and itmuser with appropriate information):\ndb2 connect to WAREHOUS user itmuser\ndb2 get db cfg\n\nThe second command should show the DB2CODEPAGE variable somewhere in the output (use grep or findstr for simplicity).  If the DB2CODEPAGE is not 1208 then change it to 1208 by using the command:\ndb2set DB2CODEPAGE=1208\n\nNOTE: If this is a Windows system, then you must also create an OS environment variable  DB2CODEPAGE and set its value to 1208 (right-click on My Computer -> Properties -> Advanced -> Enviroment Variables -> System Variables -> New).  Windows will need to be restarted for this change to properly take effect.>>>\n\n";
+	print "<<Solution: Set the OS environment variable DB2CODEPAGE=1208 for DB2 or NLS_LANG=<NLS_LANGUAGE>_<NLS_TERRITORY>.AL32UTF8 for ORACLE\nConfirm DB2CODEPAGE=1208 using the following commands (replace WAREHOUS and itmuser with appropriate information):\ndb2 connect to WAREHOUS user itmuser\ndb2 get db cfg\n\nThe second command should show the DB2CODEPAGE variable somewhere in the output (use grep or findstr for simplicity).  If the DB2CODEPAGE is not 1208 then change it to 1208 by using the command:\ndb2set DB2CODEPAGE=1208\n\nNOTE: If this is a Windows system, then you must also create an OS  SYSTEM environment variable  DB2CODEPAGE and set the value to 1208 (right-click on My Computer -> Properties -> Advanced -> Enviroment Variables -> System Variables -> New).  MS-Windows may need to be restarted for this change to properly take effect.>>>\n\n";
 	print color 'reset';
 	}
 } 
