@@ -16,6 +16,8 @@
 #################################################################################
 #
 # Revision History:
+# Revision 1.23 2016/08/04                                                                                                                                                                   
+#       Added searh err_gmm() to detect "GMM1_AllocateStorage failed" errors
 # Revision 1.22 2016/07/13
 # 	Added search err_rrn to detect major/critical errors with the QA1CSTSH table/index at the TEMS
 # Revision 1.21 2016/07/11
@@ -145,6 +147,7 @@ undef my @ARctirahost;
 # Error Variables
 my $err_kfa_invalidname=undef;
 my $err_rrn=undef;
+my $sErr_gmm=undef;
 
 
 #################################################################################
@@ -487,6 +490,7 @@ err_tsitdesc();
 err_sitfilter();
 err_kfainvalid();
 err_rrn();
+err_gmm();
 
 print "\n#######################################################\n";
 
@@ -516,6 +520,21 @@ exit (0);
 ##################################################################################
 #######################        Subroutines     ###################################
 ##################################################################################
+sub err_gmm {
+my @ARGmm=grep(/\sGMM1_AllocateStorage\sfailed\s/,@ARLogarray) or my $sErr_gmm=("none");
+	if ($#ARGmm <=0) {
+		$sErr_gmm="0";
+} else {
+	print "ERROR:  GMM1_AllocateStorage Failures found.\n";
+	print "Review TEMS configuration file for the variables\t";
+	print "KDS_HEAP_SIZE and KGL_GMMSTORE\n";
+	print color 'bold';
+	print "Set both variables to 2048.";
+	print color 'reset';
+}
+}
+	
+		
 sub err_rrn {
 my @ARRrn=grep(/ERROR:\sfor\sRRN/,@ARLogarray) or my $err_rrn=("none");
 	if ($#ARRrn <= 0) {
