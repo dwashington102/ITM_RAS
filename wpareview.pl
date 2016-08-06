@@ -15,6 +15,12 @@
 #################################################################################
 #
 # Revision History:
+# Revision 2.1.00
+# 	Added nesscan() to detect GSK errors caused by Tenable Nessus Scanner.
+# 	The Tenable Nessus Scanner while scanning ITM ports generates data packets that
+# 	are not recognized by the ITM agent.
+# 	technote: http://www-01.ibm.com/support/docview.wss?uid=swg2168410
+#
 # Revision 2.0.10 2016/03/04
 #	Added search to detect dynamic trace setting change "KBBRA_ChangeLogging"
 # Revision 2.0.9 2016/01/27
@@ -113,14 +119,13 @@ my $searchnofile=(" Nofile Limit: ");
 my $searchpid=(" Process ID: ");
 my $searchcandlehome=(" CANDLEHOME=\"");
 
-# Searches used to extract network information.
+# Searches used to extract network information
 my $searchitmipaddr=("source=");
 my $searchkdc=("=KDC_FAMILIES=");
 my $searchagentport=("KDEBP_AssignPort");
 my $searchhttpkdhsqlqm=("kdhslqm.*add_listener.*listening");
 my $searchctirahostname=("CTIRA_HOSTNAME");
 my $searchkdebinterface=(" KDEB_INTERFACELIST");
-#my $searchitmcms=(" CT_CMSLIST");
 my $searchitmcms=("\"ConnectToProxy\"");
 my $searchregister=("Registering \"Candle_Warehouse_Proxy\"");
 my $searchtemslist=("KHD_WAREHOUSE_TEMS_LIST=\"");
@@ -137,7 +142,7 @@ my $searchkhdbatch=("KHD_BATCH_USE is set to");
 my $searchwindb=("getDatabaseInfo\"");
 my $searchdbuser=("KHD_WAREHOUSE_USER");
 
-# undefined variables
+# Common undefined variables found in all RAS logs
 my $sHost=undef;
 my $sStarttime=undef;
 my $sIpaddrsplt=undef;
@@ -163,6 +168,9 @@ my $sKdhslqm=undef;
 
 # Common errors found in RAS logs 
 my $searchcmsrunning=("Unable to find running CMS");
+my $sGskit=undef;
+
+
 
 #################################################################################
 # Get LocalHost OS                                                              #
@@ -198,6 +206,10 @@ print "\n#######################################################\n";
 print "\t\t$mostrctlog\n";
 print "#######################################################\n";
 
+
+##################################################################################
+# If $RAS < 0 the script jumps to NONRAS1 section of script
+##################################################################################
 if ($RAS >=0) {
 
 # Remove any output files from current directory.
@@ -548,17 +560,22 @@ print "\nTo match driver levels to ITM 6 versions, see URL:\nhttp://www-01.ibm.c
 print "#######################################################\n";
 print "\n#######################################################\n";
 print "Errors Messages Found in RAS LOG:\n";
-itm_errors();
 err_datasource();
+
+#############################################################
+# Must add the following functions to the NONRAS1 section
+#############################################################
+itm_errors();
+err_ctx_init();
+err_ctx_warehouseproxynotregistered();
+err_ctx_getcurrentcms();
 reject();
 err_219();
 err_rpctonode();
 err_connectionlost();
 err_ctx_odbcerror();
-err_ctx_getcurrentcms();
 err_createrouterequest();
-err_ctx_init();
-err_ctx_warehouseproxynotregistered();
+nesscan();
 
 my @ARDberrlist=grep(/ORA-/,@ARLogarray);
 	if ($#ARDberrlist >= 0) {
@@ -585,6 +602,7 @@ print "\n#######################################################\n";
 
 ###############################################################
 # Used for RAS logs other than RAS1 log.
+# NONRAS1  Section  
 ###############################################################
 } else {
 
@@ -605,9 +623,17 @@ if ($#ARkhdbatch >= 0) {
 print "\n#######################################################\n";
 print "Errors Messages Found in RAS LOG:\n";
 itm_errors();
+err_ctx_init();
+err_ctx_warehouseproxynotregistered();
+err_ctx_getcurrentcms();
 reject();
 err_219();
+err_rpctonode();
 err_connectionlost();
+err_ctx_odbcerror();
+err_createrouterequest();
+nesscan();
+
 my @ARDberrlist=grep(/ORA-/,@ARLogarray);
 	if ($#ARDberrlist >= 0) {
 	# Include functions to detect Oracle errors
@@ -647,6 +673,32 @@ exit(0);
 ##################################################################################
 #####################        Subroutines       ###################################
 ##################################################################################
+
+
+##################################################################################
+#####################  Detect Port Scan Error Messages ###########################
+##################################################################################
+sub nesscan{
+my @ARGskit_12=grep(/\sGSKit\serror\s12:/i,@ARLogarray);
+chomp(@ARGskit_12);
+
+my @ARGskit_402=grep(/\sGSKit\serror\s402:/i,@ARLogarray);
+chomp(@ARGskit_402);
+
+my @ARGskit_420=grep(/\sGSKit\serror\s420:/i,@ARLogarray);
+chomp(@ARGskit_420);
+
+#if ( $#ARGskit_12 >= 0 && $#ARGskit_402 >= 0 && $#ARGskit_420 >= 0 &&) 
+if ( $#ARGskit_12 >= 0 && $#ARGskit_402 >=0 && $#ARGskit_420 ) {
+	print "GSKit errors regarding security scan found.\n";
+	print "See Technote: http://www-01.ibm.com/support/docview.wss?uid=swg21684105\n";
+}
+else 
+	{
+	$sGskit="(none)";
+	}
+}
+
 sub tdw_inserts {
 my $searchitmdebug=("KBB_RAS1:");
 open(LOG,"<$mostrctlog");
