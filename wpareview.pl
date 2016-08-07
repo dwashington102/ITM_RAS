@@ -413,7 +413,6 @@ if ($#itmcmsfound < 0) {
 	print " NOT FOUND.\n";
 } else {
 	my $sShiftcmsfound=shift(@itmcmsfound);
-#	Changed on 8/17/2013:  my @ARcmssplit=split(/CT_CMSLIST=/,$sShiftcmsfound);
 	my @ARcmssplit=split(/Successfully connected to CMS\s/,$sShiftcmsfound);
 	chomp(@ARcmssplit);
 	print "\nAgent configured to connect to TEMS: $ARcmssplit[1]\n";
@@ -560,10 +559,14 @@ print "\nTo match driver levels to ITM 6 versions, see URL:\nhttp://www-01.ibm.c
 print "#######################################################\n";
 print "\n#######################################################\n";
 print "Errors Messages Found in RAS LOG:\n";
+#############################################################
+#Following functions are not included in the NONRAS1 section
+#############################################################
 err_datasource();
 
 #############################################################
 # Must add the following functions to the NONRAS1 section
+# Including the ARDberrlist
 #############################################################
 itm_errors();
 err_ctx_init();
@@ -688,8 +691,7 @@ chomp(@ARGskit_402);
 my @ARGskit_420=grep(/\sGSKit\serror\s420:/i,@ARLogarray);
 chomp(@ARGskit_420);
 
-#if ( $#ARGskit_12 >= 0 && $#ARGskit_402 >= 0 && $#ARGskit_420 >= 0 &&) 
-if ( $#ARGskit_12 >= 0 && $#ARGskit_402 >=0 && $#ARGskit_420 ) {
+if ( $#ARGskit_12 >= 0 && $#ARGskit_402 >=0 && $#ARGskit_420  >=0 ) {
 	print "GSKit errors regarding security scan found.\n";
 	print "See Technote: http://www-01.ibm.com/support/docview.wss?uid=swg21684105\n";
 }
@@ -1036,7 +1038,8 @@ if ($#ARCtx_warehouseproxynotregistered >= 10) {
 	print "$popCtxwarehouseproxynotregistered\n";
 } else {
 	foreach my $sCtx_warehouseproxynotregistered(@ARCtx_warehouseproxynotregistered) {
-	print "$sCtx_warehouseproxynotregistered";
+	$sCtx_warehouseproxynotregistered=($sCtx_warehouseproxynotregistered =~ /^(.)([\dA-F]+)(\..*)/); 
+	printf "%s%s%s\n", $1, scalar(localtime(oct("0x$2"))),$3;
 	print "^^^^^^Above Error IS CRITICAL^^^^^\n"
 	}
 }
