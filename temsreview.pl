@@ -518,7 +518,7 @@ if (($sCONVERT eq "yes")||($sCONVERT eq "YES")) {
 }
 print "\n#######################################################\n";
 print "Review of $mostrctlog completed.\n\n";
-exit (0);
+exit(0);
 
 ##################################################################################
 #######################        Subroutines     ###################################
@@ -529,7 +529,8 @@ my @ARKdhs_un=grep(/\sUnsupported\srequest\smethod\s\"/,@ARLogarray) or my $sErr
 
 # If the value of the array is < 0, exit function
 if ($#ARKdhs_un < 0 ) {
- 	exit(0);
+#	printf "DEBUG --- in IF statement\n";
+	return(0);
 
 # If the value of the array is > 10, write messages to a log rather than dumping to console
 } elsif ($#ARKdhs_un > 10) {
@@ -577,7 +578,7 @@ my @ARRrn=grep(/ERROR:\sfor\sRRN/,@ARLogarray) or my $err_rrn=("none");
 	if ($#ARRrn <= 0) {
 		$err_rrn="0";
 	} else {
-	print "ERROR: Problems found in QA1 files.\n"	;
+	print "\nERROR: Problems found in QA1 files.\n"	;
 	print "Search $mostrctlog for the text \"RRN\"\n";
 	}
 
@@ -589,7 +590,7 @@ my @ARKfainvalid=grep(/KFA_InvalidNameMessage/,@ARLogarray) or my $err_kfa_inval
 		$err_kfa_invalidname="0";
 	} 
 	else {
-	print "ERROR:  Invalid Node Names found within log.\n";
+	print "\nERROR:  Invalid Node Names found within log.\n";
 	print "Search $mostrctlog for the text \"Validation for node failed\"\n";
 	}
 }
@@ -655,7 +656,7 @@ my @ARFiltersit=grep(/Filter\sobject\stoo\sbig\s/i,@ARLogarray);
 
 # If the value of the array is < 0, exit function
 if ($#ARFiltersit <0) { 
-	exit(0);
+	return(0);
 #
 # If the value of the array is > 10, write messages to a log rather than dumping to console
 } elsif ($#ARFiltersit > 10) {
@@ -691,7 +692,7 @@ if ($#ARExports < 0) {
 	my @itmmatchdebug = grep(/$searchitmdebug/, @ARLogarray) or print "\nKBB_RAS1 setting not found in $mostrctlog.\n";
 	if ($#itmmatchdebug < 0 ) {
 	print "Confirm KBB_RAS1 setting.\n";
-	exit(0);
+	return(0);
 	} else {
 	my $shiftmatchdebug = shift(@itmmatchdebug);
 	my @debuglevel=split(/KBB_RAS1:/,$shiftmatchdebug);
