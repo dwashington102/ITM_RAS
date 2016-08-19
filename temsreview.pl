@@ -16,8 +16,10 @@
 #################################################################################
 #
 # Revision History:
-# Revision 1.23 2016/08/04                                                                                                                                                                   
-#       Added searh err_gmm() to detect "GMM1_AllocateStorage failed" errors
+# Revision 1.24 2016/08/19
+# 	Added search kdhs_unsupported() to detect "Unsupported request method" messages that can be caused by NESSUS port scans
+# Revision 1.23 2016/08/04
+##       Added searh err_gmm() to detect "GMM1_AllocateStorage failed" errors
 # Revision 1.22 2016/07/13
 # 	Added search err_rrn to detect major/critical errors with the QA1CSTSH table/index at the TEMS
 # Revision 1.21 2016/07/11
@@ -491,6 +493,7 @@ err_sitfilter();
 err_kfainvalid();
 err_rrn();
 err_gmm();
+kdhs_unsupported();
 
 print "\n#######################################################\n";
 
@@ -520,6 +523,40 @@ exit (0);
 ##################################################################################
 #######################        Subroutines     ###################################
 ##################################################################################
+sub kdhs_unsupported{
+# Used to extract text from the RAS log
+my @ARKdhs_un=grep(/\sUnsupported\srequest\smethod\s\"/,@ARLogarray) or my $sErr_kdhs=("none");
+
+# If the value of the array is < 0, exit function
+if ($#ARKdhs_un < 0 ) {
+ 	exit(0);
+
+# If the value of the array is > 10, write messages to a log rather than dumping to console
+} elsif ($#ARKdhs_un > 10) {
+	printf "\nMore than 10 Unsupported Request Method Messages found.\n";
+	open(INSERTFILE,">reviewras.kdhs");
+	foreach my $ARKdhsline(@ARKdhs_un) {
+		printf INSERTFILE "$ARKdhsline";	
+		}
+	close(INSERTFILE);
+	open(ERRORFILE,"<reviewras.kdhs");
+	open(KDHSUN,">$mostrctlog.reviewras.kdhs_unsupported");
+	while (<ERRORFILE>) {
+		print KDHSUN "$_\n";	
+		}
+	unlink("reviewras.kdhs");
+	close(ERRORFILE);
+	close(KDHSUN);
+	print "Unsupported Request Messages written to $mostrctlog.reviewras.kdhs_unsupported\n";
+
+# If the value of the array is <0, but >10 write messages to console 
+} else {
+	foreach my $ARKdhsline(@ARKdhs_un) {
+		printf "Debug: $ARKdhsline\n";
+	}
+	}
+}
+
 sub err_gmm {
 my @ARGmm=grep(/\sGMM1_AllocateStorage\sfailed\s/,@ARLogarray) or my $sErr_gmm=("none");
 	if ($#ARGmm <=0) {
@@ -562,12 +599,12 @@ my @ARGlbwarehouse=grep(/Found\swarehouse\sGLB\saddress\sof\s/,@ARLogarray) or m
 print "\nRegistered Warehouse Hosts:";
 	if ($#ARGlbwarehouse >=0 ){
 	foreach $sGlbwarehouse(@ARGlbwarehouse) {
-	my @ARFoundglb=split(/Found\s/s,$sGlbwarehouse);
-	chomp (@ARFoundglb);
-	print "\nFound $ARFoundglb[1]\n";
+		my @ARFoundglb=split(/Found\s/s,$sGlbwarehouse);
+		chomp (@ARFoundglb);
+		print "\nFound $ARFoundglb[1]\n";
 	}
 	} else {
-	print "--------------No GLB Warehouse Registration Information Found-------------";
+		print "--------------No GLB Warehouse Registration Information Found-------------";
 	}
 }
 
@@ -613,16 +650,38 @@ print "Errors to TEMS tables found in log.  Errors stored  in $mostrctlog.review
 
 sub err_sitfilter{
 undef my $ARFiltersit=undef;
+# Used to extract text from the RAS log
 my @ARFiltersit=grep(/Filter\sobject\stoo\sbig\s/i,@ARLogarray);
-if ($#ARFiltersit <0) 
-	{ print "\n";}
-	else {
-		print "\nSituation Filter Issues:\n";
-		foreach $ARFiltersit(@ARFiltersit) {
-		 print "$ARFiltersit";
- 		}
-	
-	}	
+
+# If the value of the array is < 0, exit function
+if ($#ARFiltersit <0) { 
+	exit(0);
+#
+# If the value of the array is > 10, write messages to a log rather than dumping to console
+} elsif ($#ARFiltersit > 10) {
+	printf "\nMore than 10 \"Filter object too big\" messages found.\n";
+	open(INSERTFILE,">reviewras.filter");
+	foreach my $ARFilterfound(@ARFiltersit) {
+		printf INSERTFILE "$ARFilterfound";
+	}
+	close(INSERTFILE);
+	open(ERRORFILE,"<reviewras.filter");
+	open(FILTER,">$mostrctlog.reviewras.filter_too_big");
+	while(<ERRORFILE>) {
+		print FILTER "$_\n";
+	}
+	unlink("reviewras.filter");
+	close(ERRORFILE);
+	close(FILTER);
+	printf "Filter object too big messages written to $mostrctlog.reviewras.filter_too_big\n";
+
+# If the value of the array is <0, but >10 write messages to console 
+} else {
+	print "\nSituation Filter Issues:\n";
+	foreach $ARFiltersit(@ARFiltersit) {
+		print "$ARFiltersit";
+	}
+}	
 }
 
 sub tdw_exports {
