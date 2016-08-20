@@ -550,7 +550,7 @@ if ($#ARKdhs_un < 0 ) {
 	close(KDHSUN);
 	print "Unsupported Request Messages written to $mostrctlog.reviewras.kdhs_unsupported\n";
 
-# If the value of the array is <0, but >10 write messages to console 
+# If the value of the array is > 0, but < 10 write messages to console 
 } else {
 	foreach my $ARKdhsline(@ARKdhs_un) {
 		printf "Debug: $ARKdhsline\n";
