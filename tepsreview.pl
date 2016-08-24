@@ -585,6 +585,7 @@ if (-z $mostrctlog) {
 	exit (-1);
 } elsif  ((-e $mostrctlog) && (-T $mostrctlog))  {
 	chomp $mostrctlog;
+	return(0);
 } else {
 	print "Unable to process $mostrctlog.\n";	
 }
@@ -599,7 +600,7 @@ if ($#ARGetkeyitemlist < 0) {
 	my $popGetkeyitemlist=pop(@ARGetkeyitemlist);	
 	print "\n<<<<<<<<<<< CRITICAL:  TEPS Fails to start >>>>>>>>>>>>>>>";
 	print "\n$popGetkeyitemlist";
-	print "Solution:  http://www-01.ibm.com/support/docview.wss?uid=swg21589328\n";
+	print ">>> Solution:  http://www-01.ibm.com/support/docview.wss?uid=swg21589328 <<<\n";
 }
 }
 
