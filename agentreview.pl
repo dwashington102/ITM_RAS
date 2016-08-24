@@ -686,6 +686,7 @@ if ($#ARcomponentmatch eq $#ARdrivermatch) {
 sub check_filename {
 if ((-e $mostrctlog) && (-T $mostrctlog)) {
 	chomp $mostrctlog;
+	return(0);
 } elsif (-z $mostrctlog) {
 	print "File $mostrctlog is 0 bytes\n";
 	exit (1);

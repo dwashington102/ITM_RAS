@@ -621,6 +621,7 @@ if (-z $mostrctlog) {
 	exit (-1);
 } elsif  ((-e $mostrctlog) && (-T $mostrctlog))  {
 	chomp $mostrctlog;
+	return(0);
 } else {
 	print "Unable to process $mostrctlog.\n";	
 }
