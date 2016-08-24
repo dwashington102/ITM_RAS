@@ -1,24 +1,7 @@
-" Vim syntax file: raslog.vim
+" Vim syntax file
 " " Language:         ITM 6 log syntax 
 " " Maintainer:       David Washington (washingd@us.ibm.com)
-" " Latest Revision:  2016-07-16
-" "
-" " Place raslog.vim in $HOME/.vim/syntax directory
-" " To automatically load raslog.vim when viewing ITM RAS logs add the
-" following to the $HOME/.vimrc file:
-" " =========== Auto filedetect - Load Syntax==========
-" au BufRead,BufNewFile SystemOut* set syntax=log
-" au BufRead,BufNewFile messages.log set syntax=log
-" au BufRead,BufNewFile cogserver.log set syntax=cognos
-" au BufRead,BufNewFile *_cq_KfwServices_* set syntax=raslog
-" au BufRead,BufNewFile *_cq_5* set syntax=raslog
-" au BufRead,BufNewFile *_hd_5* set syntax=raslog
-" au BufRead,BufNewFile *_ms_5* set syntax=raslog
-" au BufRead,BufNewFile *_cms_5* set syntax=raslog
-" au BufRead,BufNewFile *_sy_java_5* set syntax=raslog                                                                                                                                         
-" au BufRead,BufNewFile *_ux_kuxagent_5*.log      set syntax=raslog
-" au BufRead,BufNewFile *_lz_klzagent_5*.log      set syntax=raslog
-" au BufRead,BufNewFile *_nt_kntcma_5*.log      set syntax=raslog
+" " Latest Revision:  2015-06-25
 
 syntax clear
 syntax case match
@@ -65,6 +48,7 @@ syn match itm_err_export_66 /\sstatus\s=\s66,\sfor\sobject.*\n/
 syn match tems_err_sitfilter /Filter\sobject\stoo\sbig\s.*/
 syn match tems_node_failed /Validation\sfor\snode\sfailed/
 syn match tems_err_rrn /ERROR:\sfor\sRRN\s.*/
+syn match tems_err_gmm1 /GMM1_AllocateStorage\sfailed.*/
 
 " TEPS Section
 syn match teps_kfw_interfaces  /\sKFW_INTERFACES=\".*\"/
@@ -85,6 +69,7 @@ syn match teps_CANDLEHOME /=\"|CANDLE_HOME|/
 syn match teps_CANDLEHOME_a /using\s|CANDLE_HOME|/
 syn match teps_aix_IV77462 /\sConversation\stimeout:\s.*1C010008:00000000,/
 syn match teps_describeDataSource /::describeDataSource.*/
+syn match teps_getkeyitemlist /\sFailed\sin\sGSKKM_GetKeyItemListByLabel\.\s.*48/
 
 " WPA Section
 syn match wpa_online /\sTivoli\sExport\sServer\sReady.*\n/
@@ -179,6 +164,7 @@ hi itm_err_password ctermbg=red ctermfg=white
 hi itm_err_failed_export ctermbg=red ctermfg=white
 hi sy_err_tep_connect_crit ctermbg=red ctermfg=white
 
+
 " Fatal Errors
 hi tems_locks ctermbg=92 ctermfg=white
 hi itm_err_cms_connect ctermbg=92 ctermfg=white
@@ -194,6 +180,7 @@ hi teps_CANDLEHOME_a ctermbg=92 ctermfg=white
 " TEMS Highlight Section
 hi tems_node_failed ctermbg=yellow ctermfg=black
 hi tems_err_rrn ctermbg=red ctermfg=white
+hi tems_err_gmm1 ctermbg=red ctermfg=white
 
 " TEPS Section
 hi teps_online ctermbg=DarkBlue ctermfg=white
@@ -203,6 +190,7 @@ hi teps_ior ctermbg=green ctermfg=black
 hi teps_err_closerequest ctermbg=red ctermfg=white
 hi teps_tdw_connection ctermbg=red ctermfg=white
 hi teps_describeDataSource ctermbg=green ctermfg=black
+hi teps_getkeyitemlist ctermbg=red ctermfg=white
 
 " WPA Section
 hi wpa_online ctermbg=DarkBlue ctermfg=white
