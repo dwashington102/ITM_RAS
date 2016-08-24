@@ -16,6 +16,8 @@
 #################################################################################
 #
 # Revision History:
+# Revision 2.15 2016/08/24
+# 	Added search to detect GSKKM_GetKeyItemListByLabel errors. err_get_keyitems()
 # Revision 2.14 2016/05/12
 # Changed err_warehousesumprune grep statement
 # Previous grep: my @ARWarehousesumprune=grep(/Error\sretrieving\sSumm/,@ARLogarray);
@@ -131,6 +133,7 @@ my $sSysType=undef;
 my $sStartTime=undef;
 my $sPortassign=undef;
 my $sKdhslqm=undef;
+my $sGetkey=undef;
 undef my @ARctirahost;
 undef my @ARtepserrors;
 
@@ -519,6 +522,7 @@ print "ERROR Messages Found in RAS LOG:\n";
 unlink("$mostrctlog.reviewras.err");
 
 # Calling subroutines to locate errors in log
+err_get_keyitems();
 sda_warning();
 err_jvm();
 err_ipaddrchange();
@@ -583,6 +587,19 @@ if (-z $mostrctlog) {
 	chomp $mostrctlog;
 } else {
 	print "Unable to process $mostrctlog.\n";	
+}
+}
+
+sub err_get_keyitems {
+my @ARGetkeyitemlist=grep(/Failed\ in\ GSKKM_GetKeyItemListByLabel/,@ARLogarray);
+if ($#ARGetkeyitemlist < 0) {
+	my $sGetkeylist=("none");
+	return(0);
+} else {
+	my $popGetkeyitemlist=pop(@ARGetkeyitemlist);	
+	print "\n<<<<<<<<<<< CRITICAL:  TEPS Fails to start >>>>>>>>>>>>>>>";
+	print "\n$popGetkeyitemlist";
+	print "Solution:  http://www-01.ibm.com/support/docview.wss?uid=swg21589328\n";
 }
 }
 
