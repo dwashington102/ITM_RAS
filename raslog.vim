@@ -82,6 +82,7 @@ syn keyword wpa_errors CTX_JDBCError CTX_Critical SqlDataException KHDBatchFailu
 syn keyword wpa_err_fatal CTX_Fatal CTX_InitJVMError 
 syn match wpa_err_reject /\sREJECTED:\sThe\sexport\sfor\sthe\soriginnode\s/
 syn match wpa_err_testdb /\stestDatabaseConnection\sfailed/
+syn match wpa_err_cms /.*\sCTX_GetCurrentCMSAddressError/
 
 " SY Section
 syn match sy_teps /CNP\sserver\s.*\n/
@@ -170,6 +171,7 @@ hi tems_locks ctermbg=92 ctermfg=white
 hi itm_err_cms_connect ctermbg=92 ctermfg=white
 hi itm_err_db_connect ctermbg=92 ctermfg=white
 hi wpa_err_fatal ctermbg=92 ctermfg=white
+hi wpa_err_cms cterm=92 ctermfg=white
 hi wpa_err_testdb ctermbg=92 ctermfg=white
 hi teps_err_fatal_IHS ctermbg=92 ctermfg=white
 hi db2_err_SQL1032N ctermbg=92 ctermfg=white
