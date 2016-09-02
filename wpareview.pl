@@ -15,6 +15,8 @@
 #################################################################################
 #
 # Revision History:
+# Revision 2.1.01 
+#	Added $sUsername undef to parse the userid defined at "Process running as USERID"
 # Revision 2.1.00
 # 	Added nesscan() to detect GSK errors caused by Tenable Nessus Scanner.
 # 	The Tenable Nessus Scanner while scanning ITM ports generates data packets that
@@ -156,6 +158,7 @@ my $key=undef;
 my $value=undef;
 my $sDatasourcefailed=undef;
 my $sRpcerrortonode=undef;
+my $sUsername=undef;
 
 undef my @ARRpcerrortonode;
 undef my @ARDatasourcefailed;
@@ -303,7 +306,8 @@ if ($#itmmatchusername < 0) {
 	my $shiftmatchusername=shift(@itmmatchusername);
 	my @splitusername=split(/User Name:/,$shiftmatchusername);
 	chomp(@splitusername);
-	my $sUsername="$splitusername[1]";
+	($sUsername)=substr($splitusername[1],0,30);
+#	my $sUsername="$splitusername[1]";
 	print "Process running as USERID: $sUsername\n";
 }
 
