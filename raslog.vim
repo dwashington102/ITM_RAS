@@ -70,6 +70,7 @@ syn match teps_CANDLEHOME_a /using\s|CANDLE_HOME|/
 syn match teps_aix_IV77462 /\sConversation\stimeout:\s.*1C010008:00000000,/
 syn match teps_describeDataSource /::describeDataSource.*/
 syn match teps_getkeyitemlist /\sFailed\sin\sGSKKM_GetKeyItemListByLabel\.\s.*48/
+syn match teps_db_offline /\sunable\sto\sestablish\sdatabase.*TEPS\'/
 
 " WPA Section
 syn match wpa_online /\sTivoli\sExport\sServer\sReady.*\n/
@@ -178,6 +179,7 @@ hi db2_err_SQL1032N ctermbg=92 ctermfg=white
 hi db2_err_codepage_FATAL ctermbg=92 ctermfg=white
 hi teps_CANDLEHOME ctermbg=92 ctermfg=white
 hi teps_CANDLEHOME_a ctermbg=92 ctermfg=white
+hi teps_db_offline ctermbg=red ctermfg=white
 
 " TEMS Highlight Section
 hi tems_node_failed ctermbg=yellow ctermfg=black
