@@ -16,6 +16,8 @@
 #################################################################################
 #
 # Revision History:
+# Revision 2.16 2016/09/14
+# 	Modified db2_err to only locate SQL\d{4} and SQL\d{5} to find messages that end with C, N, or W
 # Revision 2.15 2016/08/24
 # 	Added search to detect GSKKM_GetKeyItemListByLabel errors. err_get_keyitems()
 # Revision 2.14 2016/05/12
@@ -659,7 +661,7 @@ if ($#ARIpaddrchange < 0) {
 sub err_describedatasources {
 my @ARDescribedatasource=grep(/unable\sto\sestablish\sdatabase\sconnection\sto/i,@ARLogarray) or my $sDescribedatasource=("none");
 	if ($#ARDescribedatasource >= 0) {
-		print "\nErrors in RAS log indicte the TEPS failed to connect to the data warehouse.\n";
+		print "\nErrors in RAS log indicate the TEPS failed to connect to the data warehouse.\n";
 		my $sDescribedatasource=pop(@ARDescribedatasource);
 		chomp($sDescribedatasource);
 		$sDescribedatasource=($sDescribedatasource =~ /^(.)([\dA-F]+)(\..*)/);
@@ -981,7 +983,9 @@ print ">>>\n";
 # Subroutines for various DB2 Errors
 sub db2_errors {
 unlink("reviewras.db2err");
-my @ARDb2err=grep(/SQL(\d){4}[C-W]|SQL(\d){5}[C-W]/,@ARLogarray);
+#my @ARDb2err=grep(/SQL(\d){4}[C-W]|SQL(\d){5}[C-W]/,@ARLogarray);
+# Change below made 09-14-2016 David W.
+my @ARDb2err=grep(/SQL(\d){4}[C\s|N\s|W\s]|SQL(\d){5}[C\s|N\s|W\s]/,@ARLogarray);
 my $itotdb2err = $#ARDb2err +1;
 if ($#ARDb2err >= 0) {
 	open(DB2ERR,">reviewras.db2err");
@@ -1167,7 +1171,7 @@ if ($#ARWarehousesumprune >= 0) {
 	
 }
 	else {
-	print "No errors found with TEPS connection to Data Warehouse.\n";
+	print "\n";
 	}
 }
 
@@ -1182,5 +1186,15 @@ if ($#ARIV77462 >= 0) {
 	print "See technote:  http://www-01.ibm.com/support/docview.wss?uid=swg21968342\n";
 	print color 'reset';
 		
+}
+}
+
+sub mess_invalid_data {
+my @ARDatamember=grep(/Exception:\sinvalid\sData\smember/,@ARLogarray);
+if ($#ARDatamember >=50) {
+		my $sDatamembers=pop(@ARDatamember);
+		chomp($sDatamembers);
+		print "Safe to ignore:\n$sDatamembers\n";
+		print "See PMR: 53794,057,649\n"
 }
 }
