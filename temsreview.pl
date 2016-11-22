@@ -16,6 +16,8 @@
 #################################################################################
 #
 # Revision History:
+# Revision 1.25 2016/11/22
+# 	Added search kms_omtec() to detect "(5812A575.000E-1:kbbssge.c,72,"BSS1_GetEnv") KMS_OMTEC_INTEGRATION="XX""
 # Revision 1.24 2016/08/19
 # 	Added search kdhs_unsupported() to detect "Unsupported request method" messages that can be caused by NESSUS port scans
 # Revision 1.23 2016/08/04
@@ -105,6 +107,7 @@ my $iforloopnic =1;
 # Specific searches for TEMS logs
 my $searchulimit=("Nofile Limit: ");
 my $searchkdsrun=("KDS_RUN=\"");
+my $searchomtec=("KMS_OMTEC_INTEGRATION=\"");
 my $searchkdshub=("KDS_HUB=\"");
 my $searchnodeid=(" CMS_NODEID=\"");
 my $searchkdsvalidate=("KDS_VALIDATE=\"");
@@ -416,6 +419,17 @@ else {
 	my ($sKdsrun) = $shiftmatchrun =~ m/KDS_RUN=\"(.*?)\"/;
 	print "\nKDS_RUN setting: $sKdsrun\n";
 }
+
+my @ARomtec=grep(/$searchomtec/,@ARLogarray) or print "\nKMS_OMTEC_INTEGRATION setting ";
+if ($#ARomtec < 0) {
+	print " NOT FOUND\n";
+}
+else {
+	my $shiftmatchomtec=shift(@ARomtec);
+	my ($sKdsomtec) = $shiftmatchomtec =~ m/KMS_OMTEC_INTEGRATION=\"(.*?)\"/;
+	print "\nKDS_OMTEC_INTEGRATION setting: $sKdsomtec\n";
+}
+
 
 my @ARkdsvalidate=grep(/[CMS|KDS]_VALIDATE/,@ARLogarray) or print "Security settings(KDS_VALIDATE) ";
 if ($#ARkdsvalidate < 0) {
