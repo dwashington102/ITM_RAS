@@ -442,7 +442,7 @@ if ($#ARtwork >=0) {
 		print "More than 10 \"SQLException errors found in $mostrctlog\n";
 		print "SQLException errors stored in file $mostrctlog.reviewras.sqlexceptions\n";
 		#print "\n<<<  Solution:  Locate tables causing SQLException using: grep t=work{x} $mostrctlog | grep -i -E \"Examining|SQLException\"  >>>\n";
-	        print "\n<<<  Solution:  Locate tables causing SQLException using: grep -E \"^== 2012|t=work<x>\" $mostrctlog | grep -i -E \"Examining|SQLException|Exception|Memory in bytes\"  >>>\n";
+	        print "\n<<<  Solution:  Locate tables causing SQLException using:\ngrep -E \"^== 2012|t=work<x>\" $mostrctlog | grep -i -E \"Examining|SQLException|Exception|Memory in bytes\" \nNOTE: Confirm \"work\<x\>\" using information in the $mostrctlog.reviewras.sqlexception file. >>>\n";
 	} elsif ($#ARsqlexception >=0) {
 	
 	print "SQLException Errors Found:\n";
