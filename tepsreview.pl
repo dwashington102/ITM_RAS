@@ -16,6 +16,8 @@
 #################################################################################
 #
 # Revision History:
+# Revision 2.17 2017/02/02
+# 	Added search to pul KFW_MCS_XML_FILES variable from RAS log
 # Revision 2.16 2016/09/14
 # 	Modified db2_err to only locate SQL\d{4} and SQL\d{5} to find messages that end with C, N, or W
 # Revision 2.15 2016/08/24
@@ -460,24 +462,20 @@ if ($#ARFips < 0) {
 	print " $sFips\n";
 }
 
-my @ARctjdbc=grep(/$searchctjdbc/,@ARLogarray) or print "\nKFW_JVM__CTJDBC_CLASSPATH ";
-if ($#ARctjdbc < 0) {
-	print "NOT FOUND.\n";
-}
-else {
-	chomp(@ARctjdbc);
-	my $sCtjdbc="@ARctjdbc";
-	my @ARsplitctjdbc=split(/GetEnv\"\)/,$sCtjdbc);
-	chomp(@ARsplitctjdbc);
-	print "\nIf TEPS connects to Oracle data warehouse, confirm correct Oracle jar file is specified here:";
-	print "\nIf TEPS connects to MSSQL data warehouse, confirm correct MSSQL jar file is specified here:";
-	print "\n$ARsplitctjdbc[1]\n";
-}
 # Gather TDW connection information
-get_cnpior();
+print "\nTEPS settings regarding connection to the Data Warehouse";
 get_tdwconnection();
+get_jdbcclasspath();
+
+# Confirm if any errors encountered with the TEPS connection to the data warehouse
 err_describedatasources();
 err_warehousesumprune();
+
+# Gather and Highlight TEPS environment variable settings
+print "\nUseful TEPS Environment Variables";
+get_tedgen();
+get_cnpior();
+
 
 print "#######################################################\n";
 
@@ -1196,5 +1194,37 @@ if ($#ARDatamember >=50) {
 		chomp($sDatamembers);
 		print "Safe to ignore:\n$sDatamembers\n";
 		print "See PMR: 53794,057,649\n"
+}
+}
+
+sub get_tedgen {
+	my @ARTedgen=grep(/KFW_MCS_XML_FILES=/,@ARLogarray);
+	if ($#ARTedgen >= 0 ){
+		my $sTedgen=pop(@ARTedgen);
+		chomp($sTedgen);
+		my @ARsplittedgen=split(/GetEnv\"\)/,$sTedgen);
+		print "\n$ARsplittedgen[1]\n";
+			#print "\nDebug>>>>>$sTedgen\n";
+		print "If setting points to XML file this may result in missing Classes in the Situation Editor's EIF tab>>>>>>>>>>\n";
+		print "Run tedgen tool to generate XML file is classes are missing.  See technote: http://www-01.ibm.com/support/docview.wss?uid=swg21440700\n "
+	}
+	else {
+	print "KFW_MCS_XML_FILES setting NOT FOUND.\n";
+	}
+}
+
+sub get_jdbcclasspath {
+my @ARctjdbc=grep(/$searchctjdbc/,@ARLogarray) or print "\nKFW_JVM__CTJDBC_CLASSPATH ";
+if ($#ARctjdbc < 0) {
+	print "NOT FOUND.\n";
+}
+else {
+	chomp(@ARctjdbc);
+	my $sCtjdbc="@ARctjdbc";
+	my @ARsplitctjdbc=split(/GetEnv\"\)/,$sCtjdbc);
+	chomp(@ARsplitctjdbc);
+	print "\n$ARsplitctjdbc[1]";
+	print "\nIf TEPS connects to Oracle data warehouse, confirm correct Oracle jar file is specified here:";
+	print "\nIf TEPS connects to MSSQL data warehouse, confirm correct MSSQL jar file is specified here:";
 }
 }
