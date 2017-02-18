@@ -472,7 +472,7 @@ err_describedatasources();
 err_warehousesumprune();
 
 # Gather and Highlight TEPS environment variable settings
-print "\nUseful TEPS Environment Variables";
+print "\nUseful TEPS Environment Variables:";
 get_tedgen();
 get_cnpior();
 
@@ -1209,7 +1209,7 @@ sub get_tedgen {
 		print "Run tedgen tool to generate XML file is classes are missing.  See technote: http://www-01.ibm.com/support/docview.wss?uid=swg21440700\n "
 	}
 	else {
-	print "KFW_MCS_XML_FILES setting NOT FOUND.\n";
+	print "\nKFW_MCS_XML_FILES setting NOT FOUND.\n";
 	}
 }
 

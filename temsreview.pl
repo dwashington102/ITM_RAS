@@ -420,14 +420,14 @@ else {
 	print "\nKDS_RUN setting: $sKdsrun\n";
 }
 
-my @ARomtec=grep(/$searchomtec/,@ARLogarray) or print "\nKMS_OMTEC_INTEGRATION setting ";
+my @ARomtec=grep(/$searchomtec/,@ARLogarray) or print "\nKMS_OMTEC_INTEGRATION setting for EIF EVENTS: ";
 if ($#ARomtec < 0) {
 	print " NOT FOUND\n";
 }
 else {
 	my $shiftmatchomtec=shift(@ARomtec);
 	my ($sKdsomtec) = $shiftmatchomtec =~ m/KMS_OMTEC_INTEGRATION=\"(.*?)\"/;
-	print "\nKDS_OMTEC_INTEGRATION setting: $sKdsomtec\n";
+	print "\nKDS_OMTEC_INTEGRATION setting for EIF EVENTS: $sKdsomtec\n";
 }
 
 
@@ -593,7 +593,7 @@ my @ARRrn=grep(/ERROR:\sfor\sRRN/,@ARLogarray) or my $err_rrn=("none");
 		$err_rrn="0";
 	} else {
 	print "\nERROR: Problems found in QA1 files.\n"	;
-	print "Search $mostrctlog for the text \"RRN\"\n";
+	print "Search $mostrctlog for the text \"RRN\"\n\n";
 	}
 
 }
