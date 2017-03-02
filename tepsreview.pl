@@ -16,8 +16,10 @@
 #################################################################################
 #
 # Revision History:
+# Revision 2.18 2017/03/02
+# 	Added search to pull KFW_AUTHORIZATION_USE_EWAS_" variable from RAS log
 # Revision 2.17 2017/02/02
-# 	Added search to pul KFW_MCS_XML_FILES variable from RAS log
+# 	Added search to pull KFW_MCS_XML_FILES variable from RAS log
 # Revision 2.16 2016/09/14
 # 	Modified db2_err to only locate SQL\d{4} and SQL\d{5} to find messages that end with C, N, or W
 # Revision 2.15 2016/08/24
@@ -398,13 +400,6 @@ else {
 }
 
 
-
-#my @ARKdebinterfacelist=grep(/$searchkdebinterface/,@ARLogarray);
-#if ($#ARKdebinterfacelist >= 0) {
-#	my $sKdebinterfacelist=pop(@ARKdebinterfacelist);
-#	($sKdebinterfacelist) = $sKdebinterfacelist =~ m/KDEB_INTERFACELIST=\"(.*?)\"/;
-#	print "\nKDEB_INTERFACELIST: $sKdebinterfacelist\n";
-#}
 #############################################
 ###Specific to only the TEPS1 RAS log file###
 #############################################
@@ -432,11 +427,12 @@ if ($#ARKfwdsnlist < 0) {
 }
 
 print "\nEWAS and Crypto Settings:\n";
+get_auth_ewas();
+
 my @ARewas=grep(/$searchewas/,@ARLogarray) or print "EWAS Setting $searchewas ";
 if ($#ARewas < 0 ) {
 	print " NOT FOUND.\n";
-}
-else {
+} else {
 	$_=shift(@ARewas);
 	my ($sEwas) = $_ =~ m/_GetEnv"\)\s(.*?)$/;	
 	chomp($sEwas);
@@ -446,8 +442,7 @@ else {
 my @ARjvm=grep(/$searchjvm/,@ARLogarray) or print "JVM Setting $searchjvm ";
 if ($#ARjvm < 0) {
 	print " NOT FOUND.\n";
-}
-else {
+} else {
 	$_=shift(@ARjvm);
 	my ($sJvm)= $_ =~ m/_GetEnv"\)\s(.*?)$/;
 	print " $sJvm\n";
@@ -461,6 +456,7 @@ if ($#ARFips < 0) {
 	my ($sFips)= $_ =~ m/_GetEnv"\)\s(.*?)$/;
 	print " $sFips\n";
 }
+
 
 # Gather TDW connection information
 print "\nTEPS settings regarding connection to the Data Warehouse";
@@ -1227,4 +1223,17 @@ else {
 	print "\nIf TEPS connects to Oracle data warehouse, confirm correct Oracle jar file is specified here:";
 	print "\nIf TEPS connects to MSSQL data warehouse, confirm correct MSSQL jar file is specified here:";
 }
+}
+
+sub get_auth_ewas {
+	my @ARauthewas=grep(/KFW_AUTHORIZATION_USE_EWAS=/,@ARLogarray) or print " KFW_AUTHORIZATION_USE_EWAS ";
+	if ($#ARauthewas < 0) {
+		print "NOT FOUND.\n"
+	} else {
+		chomp(@ARauthewas);
+		my $sAuthewas="@ARauthewas";
+		my @ARsplitauthewas=split(/GetEnv\"\)/,$sAuthewas);
+		chomp(@ARsplitauthewas);
+		print "$ARsplitauthewas[1]\n";
+	}
 }
