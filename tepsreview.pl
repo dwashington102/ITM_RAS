@@ -1234,6 +1234,8 @@ sub get_auth_ewas {
 		my $sAuthewas="@ARauthewas";
 		my @ARsplitauthewas=split(/GetEnv\"\)/,$sAuthewas);
 		chomp(@ARsplitauthewas);
+		print color 'bold red';
 		print "$ARsplitauthewas[1]\n";
+		print color 'reset';
 	}
 }
