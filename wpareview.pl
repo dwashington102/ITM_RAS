@@ -859,10 +859,12 @@ if ($#ARReject >= 0) {
 	$shiftreject=($shiftreject =~ /^(.)([\dA-F]+)(\..*)/); 
 	printf "%s%s%s\n", $1, scalar(localtime(oct("0x$2"))),$3;
 	if ($sLocalhostos eq "Windows") {
-		print "<<<Solution: Increase KDCFC_RXLIMIT in the WPA configuration file.\thttp://www-01.ibm.com/support/docview.wss?uid=swg21383966 >>>\n\n";
+		print "<<<Solution: Increase KDCFC_RXLIMIT using documented procedure: \nhttps://www.ibm.com/support/knowledgecenter/SSTFXA_6.3.0.2/com.ibm.itm.doc_6.3fp2/install/ch3.2changecon.htm >>>\n\n";
+		#print "<<<Solution: Increase KDCFC_RXLIMIT in the WPA configuration file.\thttp://www-01.ibm.com/support/docview.wss?uid=swg21383966 >>>\n\n";
 	} else {
 		print color 'bold';
-		print "<<<Solution: Increase KDCFC_RXLIMIT in the WPA configuration file.\thttp://www-01.ibm.com/support/docview.wss?uid=swg21383966 >>>\n\n";
+		print "<<<Solution: Increase KDCFC_RXLIMIT using documented procedure: \nhttps://www.ibm.com/support/knowledgecenter/SSTFXA_6.3.0.2/com.ibm.itm.doc_6.3fp2/install/ch3.2changecon.htm >>>\n\n";
+		#print "<<<Solution: Increase KDCFC_RXLIMIT in the WPA configuration file.\thttp://www-01.ibm.com/support/docview.wss?uid=swg21383966 >>>\n\n";
 		print color 'reset';
 	}
 } 
