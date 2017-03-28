@@ -431,7 +431,7 @@ else {
 }
 
 
-my @ARkdsvalidate=grep(/[CMS|KDS]_VALIDATE/,@ARLogarray) or print "Security settings(KDS_VALIDATE) ";
+my @ARkdsvalidate=grep(/[CMS|KDS]_VALIDATE=/,@ARLogarray) or print "\nSecurity settings(KDS_VALIDATE): ";
 if ($#ARkdsvalidate < 0) {
 	print " NOT FOUND\n"
 }
@@ -691,7 +691,7 @@ if ($#ARFiltersit <0) {
 	close(FILTER);
 	printf "Filter object too big messages written to $mostrctlog.reviewras.filter_too_big\n";
 
-# If the value of the array is <0, but >10 write messages to console 
+# If the value of the array is <=0, but >10 write messages to console 
 } else {
 	print "\nSituation Filter Issues:\n";
 	foreach $ARFiltersit(@ARFiltersit) {

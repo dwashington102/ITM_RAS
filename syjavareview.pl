@@ -197,7 +197,7 @@ if ($#matchcnp < 0) {
 	my @ARSplitcnp=split(/\s:\s/,$shiftcnp);
 	chomp(@ARSplitcnp);
 	my ($sCnphost)=substr($ARSplitcnp[1],0,35);
-	print "\nSY is configured to connect to TEPS HOSTNAME:\n\t$sCnphost";
+	print "\nSY is configured to connect to TEPS HOSTNAME (CNP server host):\n\t$sCnphost";
 	print "\n";
 }
 
