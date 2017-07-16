@@ -6,6 +6,8 @@
 # Date: 2010/09/17
 #
 # Revision History:
+# Revision 1.17 2017/07/15
+# 	added err_secj007e_ldap() 
 # Revision 1.3.1 2010/10/22
 #	changed $searchewasver from 'WebSphere Platform' to 'embeddedEXPRESS'
 #
@@ -22,6 +24,7 @@
 #	>	($sDebugsetting) = $sDebugsetting =~ m/\*=(.*?)$/;
 #	from	($sDebugsetting) = $sDebugsetting =~ m/\strace\sstate\sis\s(.*?)$/;
 #
+# Revision 1.0 2010/09/17
 # Author: David Washington
 # washingd@us.ibm.com
 #
@@ -162,7 +165,8 @@ get_startup_shutdown();
 print "\n#######################################################\n";
 
 print "#######################################################\n";
-print "Errors Found:\n\n";
+print "Errors Found:\n";
+err_secj0007e_ldap();
 err_load_jdbc();
 err_secj_auth();
 err_password();
@@ -317,30 +321,34 @@ if ($#ARTcrbuild >=0) {
 ##################################################################################
 
 sub get_startup_shutdown {
-# WSVR0001I = eWAS startup
-# WSVR0024I = eWAS shutdown
+# WSVR0001I = Websphere startup return code
+# WSVR0024I = Websphere shutdown return code
 @ARActionlist=grep(/WSVR0001I|WSVR0024I/i,@ARLogarray);
 if ($#ARActionlist >= 0) {
 	chomp(@ARActionlist);
 	$sLastaction=pop(@ARActionlist);
+	# Grab the date/time of the last startup or shutdown of Websphere
 	($sDate_last) = $sLastaction =~ m/^\[(.*?)\]\s/;
+
 	if ($sLastaction =~ m/WSVR0024I/) {
-		$sNextaction=pop(@ARActionlist);
+		$sNextaction=$sLastaction;
+		#$sNextaction=pop(@ARActionlist);
 		($sDate_next) = $sNextaction =~ m/^\[(.*?)\]\s/;
+
 		if ($sNextaction =~ m/WSVR0001I/) {
 		($sNextaction) = $sNextaction =~ m/WSVR(.*?)$/i;
 		($sLastaction) = $sLastaction =~ m/WSVR(.*?)$/i;
-		print "Most recent eWAS Startup Message:\n[$sDate_next] WSVR$sNextaction\n";
-		print "\neWAS Shutdown Message appears after most recent eWAS startup message:\n[$sDate_last] WSVR$sLastaction\n";
-		print "\nConfirm eWAS is currently running.\n";
+		print "Most recent Websphere Startup Message:\n[$sDate_next] WSVR$sNextaction\n";
+		print "\nWebsphere Shutdown Message appears after most recent Websphere startup message:\n[$sDate_last] WSVR$sLastaction\n";
+		print "\nConfirm Websphere is currently running.\n";
 		} else {
 		($sLastaction) = $sLastaction =~ m/WSVR(.*?)$/i;
-		print "Most recent eWAS Shutdown Message:\n[$sDate_last] WSVR$sLastaction\n";
-		print "Review SystemOut.log for WSVR0001I messages to confirm the date/time for the most recent eWAS startup.\n";
+		print "Most recent Websphere Shutdown Message:\n[$sDate_last] WSVR$sLastaction\n";
+		print "Review SystemOut.log for WSVR0001I messages to confirm the date/time for the most recent WebSphere startup.\n";
 		}
 	} else {
 	($sLastaction) = $sLastaction =~ m/WSVR(.*?)$/i;
-	print "Most recent eWAS Startup Message:\n[$sDate_last] WSVR$sLastaction\n";
+	print "Most recent WebSphere Startup Message:\n[$sDate_last] WSVR$sLastaction\n";
 	}
 }
 }
@@ -597,6 +605,17 @@ if ($#ARCtgtre042w >= 0) {
 	print "[$sDate] CTGTRE042W REPORT NAME: ( $sReport) MESSAGE: [ $sMessage ]\n";
 	}
 }
+}
+
+sub err_secj0007e_ldap{
+	my @ARSecj0007e_ldap=grep(/SECJ0007E.*base\sentry\sconfigured/,@ARLogarray);
+	chomp(@ARSecj0007e_ldap);
+	if ($#ARSecj0007e_ldap < 0) {
+	print "\n";
+	} else {
+	print "\nCRITICAL error code SECJ0007E FOUND.  If Websphere is failing to start there may be a problem with the contents of the wimconfig.xml.\n";	
+	print "Confirm LDAP base entry is not being set in the config:repository section for the VMMITMAdapter\n";
+	}
 }
 
 #sub err_tdw_url {
